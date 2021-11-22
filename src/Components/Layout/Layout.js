@@ -1,25 +1,25 @@
 import React from "react";
-import { Container } from "@mui/material";
-
-import { makeStyles } from "@mui/styles";
+import { Container, CssBaseline, makeStyles } from "@material-ui/core";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./Header";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 import Navigation from "./Navigation";
-import { CssBaseline } from "@mui/material";
+import Home from "../Home/Home";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "start",
+    flexDirection: "column",
   },
-  // appBarSpacer: theme.mixins.toolbar,
+  appBarSpacer: theme.mixins.toolbar,
   Content: {
-    height: "100vh",
+    paddingLeft: "50px",
+    paddingRight: "50px",
     overflow: "auto",
     flexDirection: "flex-start",
   },
   container: {
-    paddingTop: theme.spacing(3),
+    justifyContent: "flex-start",
     paddingBottom: theme.spacing(2),
   },
   paper: {
@@ -28,22 +28,25 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "colomn",
   },
 }));
-function Layout(props) {
+function Layout() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
       <CssBaseline />
       <Header />
-      <Navigation />
-      <main className={classes.Content}>
-        <div className={classes.appBarSpacer}>
-          <Container maxWidth="xl" className={classes.container}>
-            <div className={classes.root}>{props.children}</div>
-          </Container>
-        </div>
-      </main>
-      {/* {props.children} */}
-      <Footer />
+      <Router>
+        <main className={classes.Content}>
+          <Navigation />
+          <div className={classes.appBarSpacer}>
+            <Container maxWidth="xl" className={classes.container}>
+              <Switch className={classes.root}>
+                <Route exact path="/" component={Home} />
+                <Route path="/home" component={Home} />
+              </Switch>
+            </Container>
+          </div>
+        </main>
+      </Router>
     </div>
   );
 }

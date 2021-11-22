@@ -1,43 +1,34 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {
-  BrowserRouter as Router,
-  Routes as Switch,
-  Route,
-} from "react-router-dom";
-import { Provider } from "react-redux";
+
 import "./index.css";
-// import App from "./App";
+import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { createMuiTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@material-ui/core";
 
 //import components
-import Layout from "./Components/Layout/Layout";
-import { Store } from "./Store/Store";
-import Home from "./Components/Home/Home";
 
-const Routing = (
-  <Router>
-    <Layout>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/home" component={Home} />
-      </Switch>
-    </Layout>
-  </Router>
-);
-
-const theme = createMuiTheme();
+const theme = createTheme();
 theme.palette.primary.main = "#e22925";
 theme.palette.secondary.main = "#0a70bc";
 theme.palette.secondary.light = "#e75350";
 
+theme.typography.h6 = {
+  [theme.breakpoints.up("md")]: {
+    fontSize: "1.25rem",
+  },
+  [theme.breakpoints.only("sm")]: {
+    fontSize: 19,
+  },
+  [theme.breakpoints.only("xs")]: {
+    fontSize: 17,
+  },
+};
+
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Provider store={Store}>{Routing}</Provider>
-    </ThemeProvider>
-  </React.StrictMode>,
+  <ThemeProvider theme={theme}>
+    <App />
+  </ThemeProvider>,
   document.getElementById("root")
 );
 
