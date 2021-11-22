@@ -7,9 +7,9 @@ function Footer() {
     <Grid
       container
       spacing={2}
-      style={{ marginTop: "20px", marginLeft: "-5px" }}
+      style={{ marginTop: "20px", marginLeft: "5px" }}
     >
-      <Grid align="center">
+      <Grid>
         <Typography variant="caption">{"For internal use Only"}</Typography>
       </Grid>
     </Grid>
