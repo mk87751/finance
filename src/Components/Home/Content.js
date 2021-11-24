@@ -392,6 +392,7 @@ function Content() {
                 color="success"
                 type="button"
                 onCLick={handleClickAction}
+                disabled={selected.length >= 1 ? false : true}
               >
                 Action
               </Button>
@@ -400,6 +401,7 @@ function Content() {
                 size="large"
                 className={classes.buttonEnable}
                 color="success"
+                disabled={selected.length === 1 ? false : true}
               >
                 Browse
               </Button>
@@ -408,6 +410,7 @@ function Content() {
                 size="large"
                 className={classes.buttonEnable}
                 color="success"
+                disabled={selected.length === 1 ? false : true}
               >
                 Print
               </Button>

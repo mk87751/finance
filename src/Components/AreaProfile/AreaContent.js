@@ -289,34 +289,9 @@ export default function AreaContent() {
               >
                 Export to Excell
               </Button>
-              <Button
-                variant="contained"
-                size="large"
-                className={classes.buttonEnable}
-                color="success"
-                type="button"
-              >
-                Action
-              </Button>
-              <Button
-                variant="contained"
-                size="large"
-                className={classes.buttonEnable}
-                color="success"
-              >
-                Browse
-              </Button>
-              <Button
-                variant="contained"
-                size="large"
-                className={classes.buttonEnable}
-                color="success"
-              >
-                Print
-              </Button>
             </Grid>
 
-            <Grid container spacing={2}>
+            <Grid container>
               <Paper className={classes.paper}>
                 {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
                 <TableContainer className={classes.tableContainer}>

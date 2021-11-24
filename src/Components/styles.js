@@ -25,6 +25,7 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: "start",
   },
   paper: {
+    width: "100%",
     padding: theme.spacing(1),
     paddingLeft: theme.spacing(2),
     display: "flex",
@@ -92,7 +93,7 @@ export const useStyles = makeStyles((theme) => ({
     minWidth: 400,
   },
   tableContainer: {
-    maxHeight: 440,
+    maxHeight: 400,
   },
   visuallyHidden: {
     border: 0,

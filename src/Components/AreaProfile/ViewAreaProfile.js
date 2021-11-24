@@ -29,7 +29,6 @@ function ViewAreaProfile() {
         direction="row"
         justifyContent="center"
         alignItems="center"
-        spacing={2}
       >
         <Paper className={classes.paper}>
           <form>
