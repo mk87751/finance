@@ -5,6 +5,8 @@ import Header from "./Header";
 // import Footer from "./Footer";
 import Navigation from "./Navigation";
 import Home from "../Home/Home";
+import Content from "../Home/Content";
+import AreaProfile from "../AreaProfile/AreaProfile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +44,7 @@ function Layout() {
               <Switch className={classes.root}>
                 <Route exact path="/" component={Home} />
                 <Route path="/home" component={Home} />
+                <Route path="/areaProfile" component={AreaProfile} />
               </Switch>
             </Container>
           </div>

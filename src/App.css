@@ -34,3 +34,37 @@
     transform: rotate(360deg);
   }
 }
+
+.paper {
+  padding: "8px";
+  padding-left: "16px";
+  display: "flex";
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.buttonDisable {
+  background-color: #fff;
+  border: 2px solid #e22925;
+  color: #e22925;
+  margin: 16px 8px 8px 8px;
+  min-width: 210px;
+}
+
+.buttonDisable:hover {
+  background-color: #fff;
+  color: #701611;
+  border: 2px solid #701611;
+}
+
+.buttonEnable {
+  background-color: #e22925;
+  color: #fff;
+  margin: 16px 8px 8px 8px;
+  min-width: 210px;
+}
+
+.buttonEnable:hover {
+  background-color: #701611;
+  color: #fff;
+}
