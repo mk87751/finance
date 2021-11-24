@@ -1,24 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React, { Fragment, useState } from "react";
-import "../../App.css";
-import {
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Paper,
-  makeStyles,
-  Select,
-  TextField,
-  Typography,
-} from "@material-ui/core";
-import { useStyles } from "../styles";
-// import ContentTable from "./ContentTable";
-import ActionModal from "../modals/ActionModal";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { lighten } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import { Button } from "@material-ui/core";
+import { lighten, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -28,8 +14,8 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
-// import Typography from "@material-ui/core/Typography";
-// import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -38,6 +24,7 @@ import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { responseContent } from "../../Helpers/OptionHelpers";
+import { useStyles } from "../styles";
 
 const rows = responseContent;
 function descendingComparator(a, b, orderBy) {
@@ -68,76 +55,23 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "date",
-    numeric: false,
-    disablePadding: true,
-    label: "Date",
-  },
-  {
     id: "area",
     numeric: false,
     disablePadding: true,
     label: "Area",
   },
-  {
-    id: "businessUnit",
-    numeric: false,
-    disablePadding: true,
-    label: "BusinessUnit",
-  },
-  {
-    id: "account",
-    numeric: false,
-    disablePadding: true,
-    label: "Account",
-  },
-  {
-    id: "product",
-    numeric: false,
-    disablePadding: true,
-    label: "Product",
-  },
-  {
-    id: "assignedReconciler",
-    numeric: false,
-    disablePadding: true,
-    label: "Assigned Reconciler",
-  },
+
   {
     id: "assignedApprover",
     numeric: false,
     disablePadding: true,
-    label: "Assigned Approver",
+    label: "Area Approver",
   },
   {
     id: "assignedAreaApprover",
     numeric: false,
     disablePadding: true,
-    label: "Assigned Area Approver",
-  },
-  {
-    id: "ledgerBalance",
-    numeric: false,
-    disablePadding: true,
-    label: "Ledger Balance",
-  },
-  {
-    id: "controlBalance",
-    numeric: false,
-    disablePadding: true,
-    label: "Control Balance",
-  },
-  {
-    id: "outstandingListing",
-    numeric: false,
-    disablePadding: true,
-    label: "Outstanding Listing",
-  },
-  {
-    id: "difference",
-    numeric: false,
-    disablePadding: true,
-    label: "Difference",
+    label: "Backup Approver",
   },
   {
     id: "status",
@@ -280,37 +214,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     width: "100%",
-//   },
-//   paper: {
-//     width: "100%",
-//   },
-//   table: {
-//     minWidth: 750,
-//   },
-//   tableContainer: {
-//     maxHeight: 440,
-//   },
-//   visuallyHidden: {
-//     border: 0,
-//     clip: "rect(0 0 0 0)",
-//     height: 1,
-//     margin: -1,
-//     overflow: "hidden",
-//     padding: 0,
-//     position: "absolute",
-//     top: 20,
-//     width: 1,
-//   },
-// }));
-
-function Content() {
-  const [modal, setModal] = useState(false);
-  const handleClickAction = () => {
-    setModal(true);
-  };
+export default function AreaContent() {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -373,7 +277,7 @@ function Content() {
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
   return (
     <Fragment>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} style={{ marginTop: 10 }}>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <Grid item lg={12}>
@@ -391,7 +295,6 @@ function Content() {
                 className={classes.buttonEnable}
                 color="success"
                 type="button"
-                onCLick={handleClickAction}
               >
                 Action
               </Button>
@@ -412,7 +315,8 @@ function Content() {
                 Print
               </Button>
             </Grid>
-            <Grid item lg={12}>
+
+            <Grid container spacing={2}>
               <Paper className={classes.paper}>
                 {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
                 <TableContainer className={classes.tableContainer}>
@@ -464,39 +368,15 @@ function Content() {
                                 id={labelId}
                                 scope="row"
                                 padding="none"
+                                align="center"
                               >
-                                {row.date}
-                              </TableCell>
-                              <TableCell align="center">{row.area}</TableCell>
-                              <TableCell align="center">
-                                {row.businessUnit}
+                                {row.area}
                               </TableCell>
                               <TableCell align="center">
-                                {row.account}
+                                {row.areaApprover}
                               </TableCell>
                               <TableCell align="center">
-                                {row.product}
-                              </TableCell>
-                              <TableCell align="center">
-                                {row.assignedReconciler}
-                              </TableCell>
-                              <TableCell align="center">
-                                {row.assignedApprover}
-                              </TableCell>
-                              <TableCell align="center">
-                                {row.assignedAreaApprover}
-                              </TableCell>
-                              <TableCell align="center">
-                                {row.ledgerBalance}
-                              </TableCell>
-                              <TableCell align="center">
-                                {row.controlBalance}
-                              </TableCell>
-                              <TableCell align="center">
-                                {row.outstandingListing}
-                              </TableCell>
-                              <TableCell align="center">
-                                {row.difference}
+                                {row.backupApprover}
                               </TableCell>
                               <TableCell align="center">{row.status}</TableCell>
                             </TableRow>
@@ -526,9 +406,6 @@ function Content() {
           </Paper>
         </Grid>
       </Grid>
-      {modal && <ActionModal />}
     </Fragment>
   );
 }
-
-export default Content;

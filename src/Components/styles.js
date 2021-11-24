@@ -1,0 +1,108 @@
+import { makeStyles } from "@material-ui/core";
+export const useStyles = makeStyles((theme) => ({
+  formControl: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(3),
+    minWidth: 250,
+    height: 30,
+  },
+  title: {
+    marginLeft: theme.spacing(2),
+    fontWeight: "bold",
+    paddingTop: "5px",
+    color: "black",
+  },
+  profileTitle: {
+    marginLeft: theme.spacing(2),
+    marginBottom: theme.spacing(3),
+    fontWeight: "bold",
+    paddingTop: "5px",
+    color: "black",
+  },
+  root: {
+    display: "flex",
+    flexDirection: "start",
+  },
+  paper: {
+    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+  },
+  buttonEnable: {
+    "&:hover": {
+      backgroundColor: "#701611",
+      colog: "#fff",
+    },
+    backgroundColor: "#e22925",
+    borderRadius: "24px",
+    color: "#fff",
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    minWidth: 150,
+  },
+  radio: {
+    marginLeft: theme.spacing(2),
+  },
+  spacing: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    minWidth: 300,
+    height: 30,
+  },
+  buttonDisable: {
+    "&:hover": {
+      backgroundColor: "#fff",
+      colog: "#701611",
+      border: "2px solid #701611",
+    },
+    backgroundColor: "#fff",
+    border: "2px solid #e22925",
+    borderRadius: "24px",
+    color: "#e22925",
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    minWidth: 150,
+  },
+  modalPaper: {
+    position: "absolute",
+    width: 520,
+    outline: 0,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(2),
+  },
+  modalTitle: {
+    marginLeft: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+  table: {
+    minWidth: 400,
+  },
+  tableContainer: {
+    maxHeight: 440,
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: "rect(0 0 0 0)",
+    height: 1,
+    margin: -1,
+    overflow: "hidden",
+    padding: 0,
+    position: "absolute",
+    top: 20,
+    width: 1,
+  },
+}));

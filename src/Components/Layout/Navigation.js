@@ -2,12 +2,14 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-
+import { useHistory } from "react-router";
 export default function Navigation() {
-  const [value, setValue] = React.useState("one");
+  const history = useHistory();
+  const [value, setValue] = React.useState("home");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    history.push(newValue);
   };
 
   return (
@@ -25,8 +27,8 @@ export default function Navigation() {
         indicatorColor="secondary"
         aria-label="secondary tabs example"
       >
-        <Tab value="one" label="Home" />
-        <Tab value="two" label="Area Profile" />
+        <Tab value="home" label="Home" />
+        <Tab value="areaProfile" label="Area Profile" />
       </Tabs>
     </Box>
   );

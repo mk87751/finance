@@ -15,83 +15,22 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import React, { Fragment } from "react";
-
+import Content from "./Content";
 import { area, year, month, status } from "../../Helpers/OptionHelpers";
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(3),
-    minWidth: 250,
-    height: 30,
-  },
-  title: {
-    marginLeft: theme.spacing(2),
-    fontWeight: "bold",
-    paddingTop: "5px",
-    color: "black",
-  },
-  root: {
-    display: "flex",
-    flexDirection: "start",
-  },
-  paper: {
-    padding: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-  },
-  buttonEnable: {
-    "&:hover": {
-      backgroundColor: "#701611",
-      colog: "#fff",
-    },
-    backgroundColor: "#e22925",
-    color: "#fff",
-    marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    minWidth: 210,
-  },
-  radio: {
-    marginLeft: theme.spacing(2),
-  },
-  spacing: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-    minWidth: 300,
-    height: 30,
-  },
-  buttonDisable: {
-    "&:hover": {
-      backgroundColor: "#fff",
-      colog: "#701611",
-      border: "2px solid #701611",
-    },
-    backgroundColor: "#fff",
-    border: "2px solid #e22925",
-    color: "#e22925",
-    marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    minWidth: 210,
-  },
-}));
+import { useStyles } from "../styles";
 
 function Home() {
   const classes = useStyles();
-  console.log("Home");
+
+  const handleSubmit = (data) => {
+    console.log(data);
+  };
   return (
     <Fragment>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <form>
+            <form onSubmit={handleSubmit}>
               <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <Typography
@@ -320,28 +259,33 @@ function Home() {
                   </RadioGroup>
                 </FormControl>
               </Grid>
+
+              <Grid item lg={12}>
+                <Button
+                  type="button"
+                  variant="contained"
+                  size="large"
+                  className={classes.buttonDisable}
+                  color="secondary"
+                >
+                  Reset
+                </Button>
+                <Button
+                  type="button"
+                  variant="outlined"
+                  size="large"
+                  className={classes.buttonEnable}
+                  color="secondary"
+                  onClick={() => handleSubmit()}
+                >
+                  Search
+                </Button>
+              </Grid>
             </form>
-            <Grid item lg={12}>
-              <Button
-                variant="contained"
-                size="large"
-                className={classes.buttonDisable}
-                color="success"
-              >
-                Reset
-              </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                className={classes.buttonEnable}
-                color="error"
-              >
-                Search
-              </Button>
-            </Grid>
           </Paper>
         </Grid>
       </Grid>
+      <Content />
     </Fragment>
   );
 }
