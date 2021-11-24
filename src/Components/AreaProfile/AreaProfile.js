@@ -34,10 +34,14 @@ function AreaProfile() {
         direction="row"
         justifyContent="center"
         alignItems="center"
-        spacing={2}
       >
         <Paper className={classes.paper}>
-          <Grid item xs={12}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
             <FormControl component="fieldset">
               <RadioGroup
                 row
