@@ -1,25 +1,20 @@
-import {
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Paper,
-  makeStyles,
-  Select,
-  TextField,
-  Typography,
-} from "@material-ui/core";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import React, { Fragment } from "react";
-import { area, year, month, status } from "../../Helpers/OptionHelpers";
+import { Button, Grid, Paper, TextField, Typography } from "@material-ui/core";
+import React, { Fragment, useState } from "react";
 import { useStyles } from "../styles";
+
+const initialValues = {
+  newArea: "",
+  newAreaApprover: "",
+  newBackupApprover: "",
+};
 function AddAreaProfile() {
+  const [add, setAdd] = useState(initialValues);
   const classes = useStyles();
   const handleSubmit = () => {
     console.log("submit clicked");
+  };
+  const onClickCancelHandler = () => {
+    setAdd(initialValues);
   };
   return (
     <Fragment>
@@ -42,6 +37,7 @@ function AddAreaProfile() {
               </Typography>
 
               <TextField
+                value={add.newArea}
                 size="small"
                 id="area"
                 color="secondary"
@@ -49,8 +45,12 @@ function AddAreaProfile() {
                 label="New Area"
                 className={classes.spacing}
                 inputProps={{ maxLength: 12 }}
+                onChange={(event) =>
+                  setAdd({ ...add, newArea: event.target.value })
+                }
               />
               <TextField
+                value={add.newAreaApprover}
                 size="small"
                 id="areaPrrover"
                 color="secondary"
@@ -58,8 +58,12 @@ function AddAreaProfile() {
                 label="New Area Approver"
                 className={classes.spacing}
                 inputProps={{ maxLength: 12 }}
+                onChange={(event) =>
+                  setAdd({ ...add, newAreaApprover: event.target.value })
+                }
               />
               <TextField
+                value={add.newBackupApprover}
                 size="small"
                 id="backupApprover"
                 color="secondary"
@@ -67,6 +71,9 @@ function AddAreaProfile() {
                 label="New Backup Approver"
                 className={classes.spacing}
                 inputProps={{ maxLength: 12 }}
+                onChange={(event) =>
+                  setAdd({ ...add, newBackupApprover: event.target.value })
+                }
               />
             </Grid>
             <Grid item lg={12}>
@@ -76,6 +83,7 @@ function AddAreaProfile() {
                 size="large"
                 className={classes.buttonDisable}
                 color="secondary"
+                onClick={onClickCancelHandler}
               >
                 Cancel
               </Button>

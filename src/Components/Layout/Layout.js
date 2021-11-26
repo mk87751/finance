@@ -5,7 +5,7 @@ import Header from "./Header";
 // import Footer from "./Footer";
 import Navigation from "./Navigation";
 import Home from "../Home/Home";
-import Content from "../Home/Content";
+// import Content from "../Home/Content";
 import AreaProfile from "../AreaProfile/AreaProfile";
 
 const useStyles = makeStyles((theme) => ({

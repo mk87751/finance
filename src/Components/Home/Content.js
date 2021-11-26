@@ -306,11 +306,18 @@ EnhancedTableToolbar.propTypes = {
 //   },
 // }));
 
-function Content() {
+function Content({ active }) {
   const [modal, setModal] = useState(false);
+  const [approve, setApprove] = useState(false);
   const handleClickAction = () => {
+    console.log("action");
     setModal(true);
   };
+  if (approve) {
+    console.log("Approved");
+    setApprove(false);
+    setModal(false);
+  }
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -385,17 +392,19 @@ function Content() {
               >
                 Export to Excell
               </Button>
-              <Button
-                variant="contained"
-                size="large"
-                className={classes.buttonEnable}
-                color="success"
-                type="button"
-                onCLick={handleClickAction}
-                disabled={selected.length >= 1 ? false : true}
-              >
-                Action
-              </Button>
+              {active === "active" && (
+                <Button
+                  variant="contained"
+                  size="large"
+                  className={classes.buttonEnable}
+                  color="success"
+                  type="button"
+                  onClick={handleClickAction}
+                  disabled={selected.length >= 1 ? false : true}
+                >
+                  Action
+                </Button>
+              )}
               <Button
                 variant="contained"
                 size="large"
@@ -529,7 +538,9 @@ function Content() {
           </Paper>
         </Grid>
       </Grid>
-      {modal && <ActionModal />}
+      {modal && active === "active" && (
+        <ActionModal modal={setModal} approveRecords={setApprove} />
+      )}
     </Fragment>
   );
 }

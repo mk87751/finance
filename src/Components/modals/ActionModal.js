@@ -9,6 +9,8 @@ function getModalStyle() {
 
   return {
     position: "absolute",
+    background: "#fff",
+    width: "50%",
     display: "block",
     top: `${top}%`,
     left: `${left}%`,
@@ -17,16 +19,18 @@ function getModalStyle() {
   };
 }
 
-function ActionModal() {
+function ActionModal({ modal, approveRecords }) {
   const classes = useStyles();
   const modalStyle = getModalStyle();
   const subTitle = "Do you want to Approve the selected Records";
 
   const handleCancel = () => {
+    modal(false);
     console.log("Cancel button CLicked");
   };
 
   const handleApprove = () => {
+    approveRecords(true);
     console.log("Approve clicked");
   };
   const body = (
@@ -62,7 +66,7 @@ function ActionModal() {
             size="large"
             className={classes.buttonDisable}
             color="secondary"
-            onCLick={handleCancel}
+            onClick={handleCancel}
           >
             Cancel
           </Button>

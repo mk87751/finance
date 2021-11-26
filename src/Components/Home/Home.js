@@ -5,7 +5,6 @@ import {
   InputLabel,
   MenuItem,
   Paper,
-  makeStyles,
   Select,
   TextField,
   Typography,
@@ -13,17 +12,59 @@ import {
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Content from "./Content";
 import { area, year, month, status } from "../../Helpers/OptionHelpers";
 import { useStyles } from "../styles";
 
+const initialValues = {
+  repository: "active",
+  year: "",
+  month: "",
+  area: "",
+  status: "",
+  product: "",
+  businessUnit: "",
+  account: "",
+  assignedReconciler: "",
+  assignedApprover: "",
+  assignedAreaApprover: "",
+};
+
 function Home() {
   const classes = useStyles();
+  const [active, setActive] = useState(true);
+  const [search, setSearch] = useState(initialValues);
+  const [showContent, setShowContent] = useState(false);
 
-  const handleSubmit = (data) => {
-    console.log(data);
+  const handleSubmit = (event) => {
+    console.log(search.repository);
+    console.log(event);
+    console.log(search);
+    if (
+      search.year ||
+      search.month ||
+      search.area ||
+      search.status ||
+      search.businessUnit ||
+      search.account ||
+      search.product ||
+      search.assignedReconciler ||
+      search.assignedApprover ||
+      search.assignedAreaApprover
+    ) {
+      !active && setSearch({ ...search, repository: "archived" });
+      setShowContent(true);
+    }
+  };
+
+  const onChangeRepositoryHandler = (event) => {
+    console.log(event.target.value);
+    event.target.value === "active" ? setActive(true) : setActive(false);
+  };
+
+  const onClickResetHandler = () => {
+    window.location.reload(false);
   };
   return (
     <Fragment>
@@ -44,8 +85,9 @@ function Home() {
                     row
                     aria-label="position"
                     name="position"
-                    defaultValue="active"
+                    defaultValue={search.repository}
                     className={classes.radio}
+                    onClick={onChangeRepositoryHandler}
                   >
                     <FormControlLabel
                       value="active"
@@ -80,9 +122,16 @@ function Home() {
 
                   <Select
                     id="year"
+                    value={search.year}
                     color="secondary"
                     labelId="year-label"
                     label="Year"
+                    onChange={(event) =>
+                      setSearch({
+                        ...search,
+                        year: event.target.value,
+                      })
+                    }
                   >
                     {year &&
                       year.map((ele) => (
@@ -102,10 +151,17 @@ function Home() {
                   </InputLabel>
 
                   <Select
+                    value={search.month}
                     id="month"
                     color="secondary"
                     labelId="month-label"
                     label="month"
+                    onChange={(event) =>
+                      setSearch({
+                        ...search,
+                        month: event.target.value,
+                      })
+                    }
                   >
                     {month &&
                       month.map((ele) => (
@@ -125,10 +181,17 @@ function Home() {
                   </InputLabel>
 
                   <Select
+                    value={search.area}
                     id="area"
                     color="secondary"
                     labelId="area-label"
                     label="area"
+                    onChange={(event) =>
+                      setSearch({
+                        ...search,
+                        area: event.target.value,
+                      })
+                    }
                   >
                     {area &&
                       area.map((ele) => (
@@ -148,10 +211,17 @@ function Home() {
                   </InputLabel>
 
                   <Select
+                    value={search.status}
                     id="status"
                     color="secondary"
                     labelId="status-label"
                     label="status"
+                    onChange={(event) =>
+                      setSearch({
+                        ...search,
+                        status: event.target.value,
+                      })
+                    }
                   >
                     {status &&
                       status.map((ele) => (
@@ -164,30 +234,51 @@ function Home() {
 
                 <Grid item xs={12}>
                   <TextField
+                    value={search.businessUnit}
                     size="small"
                     id="businessUnit"
                     color="secondary"
                     variant="outlined"
                     label="Business Unit"
                     className={classes.spacing}
+                    onChange={(event) =>
+                      setSearch({
+                        ...search,
+                        businessUnit: event.target.value,
+                      })
+                    }
                     inputProps={{ maxLength: 12 }}
                   />
                   <TextField
+                    value={search.account}
                     size="small"
                     id="account"
                     color="secondary"
                     variant="outlined"
                     label="Account"
                     className={classes.spacing}
+                    onChange={(event) =>
+                      setSearch({
+                        ...search,
+                        account: event.target.value,
+                      })
+                    }
                     inputProps={{ maxLength: 12 }}
                   />
                   <TextField
+                    value={search.product}
                     size="small"
                     id="product"
                     color="secondary"
                     variant="outlined"
                     label="Product"
                     className={classes.spacing}
+                    onChange={(event) =>
+                      setSearch({
+                        ...search,
+                        product: event.target.value,
+                      })
+                    }
                     inputProps={{ maxLength: 12 }}
                   />
                 </Grid>
@@ -202,30 +293,51 @@ function Home() {
                   </Typography>
 
                   <TextField
+                    value={search.assignedReconciler}
                     size="small"
                     id="assignedReconciler"
                     color="secondary"
                     variant="outlined"
                     label="Assigned Reconciler"
                     className={classes.spacing}
+                    onChange={(event) =>
+                      setSearch({
+                        ...search,
+                        assignedReconciler: event.target.value,
+                      })
+                    }
                     inputProps={{ maxLength: 12 }}
                   />
                   <TextField
+                    value={search.assignedApprover}
                     size="small"
                     id="assignredApprover"
                     color="secondary"
                     variant="outlined"
                     label="Assignred Approver"
                     className={classes.spacing}
+                    onChange={(event) =>
+                      setSearch({
+                        ...search,
+                        assignedApprover: event.target.value,
+                      })
+                    }
                     inputProps={{ maxLength: 12 }}
                   />
                   <TextField
+                    value={search.assignedAreaApprover}
                     size="small"
                     id="assignedAreaApprover"
                     color="secondary"
                     variant="outlined"
                     label="Assigned Area Approver"
                     className={classes.spacing}
+                    onChange={(event) =>
+                      setSearch({
+                        ...search,
+                        assignedAreaApprover: event.target.value,
+                      })
+                    }
                     inputProps={{ maxLength: 12 }}
                   />
                 </Grid>
@@ -267,6 +379,7 @@ function Home() {
                   size="large"
                   className={classes.buttonDisable}
                   color="secondary"
+                  onClick={onClickResetHandler}
                 >
                   Reset
                 </Button>
@@ -276,7 +389,7 @@ function Home() {
                   size="large"
                   className={classes.buttonEnable}
                   color="secondary"
-                  onClick={() => handleSubmit()}
+                  onClick={handleSubmit}
                 >
                   Search
                 </Button>
@@ -285,7 +398,7 @@ function Home() {
           </Paper>
         </Grid>
       </Grid>
-      <Content />
+      {showContent && <Content active={search.repository} />}
     </Fragment>
   );
 }
