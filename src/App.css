@@ -49,6 +49,7 @@
   color: #e22925;
   margin: 16px 8px 8px 8px;
   min-width: 210px;
+  text-decoration: none;
 }
 
 .buttonDisable:hover {

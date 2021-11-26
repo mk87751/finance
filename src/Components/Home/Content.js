@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Fragment, useState } from "react";
 import "../../App.css";
+import {ExportReactCSV} from '../../ExportReactCSV';
 import {
   Button,
   FormControl,
@@ -384,27 +385,18 @@ function Content({ active }) {
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <Grid item lg={12}>
+            <ExportReactCSV csvData={rows} classes={classes.buttonDisable} fileName={"datadetails"} />
               <Button
-                variant="outlined"
+                variant="contained"
                 size="large"
-                className={classes.buttonDisable}
-                color="error"
+                className={classes.buttonEnable}
+                color="success"
+                type="button"
+                onCLick={handleClickAction}
+                disabled={selected.length >= 1 ? false : true}
               >
-                Export to Excell
+                Action
               </Button>
-              {active === "active" && (
-                <Button
-                  variant="contained"
-                  size="large"
-                  className={classes.buttonEnable}
-                  color="success"
-                  type="button"
-                  onClick={handleClickAction}
-                  disabled={selected.length >= 1 ? false : true}
-                >
-                  Action
-                </Button>
-              )}
               <Button
                 variant="contained"
                 size="large"
@@ -433,6 +425,7 @@ function Content({ active }) {
                     aria-label="sticky table"
                     sx={{}}
                     size={"small"}
+                    id="table-to-xls"
                   >
                     <EnhancedTableHead
                       classes={classes}
