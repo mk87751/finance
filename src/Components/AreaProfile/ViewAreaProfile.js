@@ -5,22 +5,34 @@ import {
   InputLabel,
   MenuItem,
   Paper,
-  makeStyles,
   Select,
   TextField,
   Typography,
 } from "@material-ui/core";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import React, { Fragment } from "react";
-import { area, year, month, status } from "../../Helpers/OptionHelpers";
+import React, { Fragment, useState } from "react";
+import { area } from "../../Helpers/OptionHelpers";
 import { useStyles } from "../styles";
 import AreaContent from "./AreaContent";
+
+const initialValues = {
+  area: "",
+  areaApprover: "",
+  backupApprover: "",
+};
 function ViewAreaProfile() {
+  const [view, setView] = useState(initialValues);
+  const [showContent, setShowContent] = useState(false);
   const classes = useStyles();
   const handleSubmit = () => {
+    if (view.area || view.areaApprover || view.backupApprover) {
+      setShowContent(true);
+    }
     console.log("submit clicked");
+  };
+
+  const onClickCancelHandler = () => {
+    setShowContent(false);
+    setView(initialValues);
   };
   return (
     <Fragment>
@@ -52,10 +64,14 @@ function ViewAreaProfile() {
                 </InputLabel>
 
                 <Select
+                  value={view.area}
                   id="area"
                   color="secondary"
                   labelId="area-label"
                   label="area"
+                  onChange={(event) =>
+                    setView({ ...view, area: event.target.value })
+                  }
                 >
                   {area &&
                     area.map((ele) => (
@@ -67,6 +83,7 @@ function ViewAreaProfile() {
               </FormControl>
 
               <TextField
+                value={view.areaApprover}
                 size="small"
                 id="areaApprover"
                 color="secondary"
@@ -74,8 +91,12 @@ function ViewAreaProfile() {
                 label="Area Approver"
                 className={classes.spacing}
                 inputProps={{ maxLength: 12 }}
+                onChange={(event) =>
+                  setView({ ...view, areaApprover: event.target.value })
+                }
               />
               <TextField
+                value={view.backupApprover}
                 size="small"
                 id="backupApprover"
                 color="secondary"
@@ -83,6 +104,9 @@ function ViewAreaProfile() {
                 label="BackupApprover"
                 className={classes.spacing}
                 inputProps={{ maxLength: 12 }}
+                onCgange={(event) =>
+                  setView({ ...view, backupApprover: event.target.value })
+                }
               />
             </Grid>
             <Grid item lg={12}>
@@ -92,6 +116,7 @@ function ViewAreaProfile() {
                 size="large"
                 className={classes.buttonDisable}
                 color="secondary"
+                onClick={onClickCancelHandler}
               >
                 Cancel
               </Button>
@@ -109,7 +134,7 @@ function ViewAreaProfile() {
           </form>
         </Paper>
       </Grid>
-      <AreaContent />
+      {showContent && <AreaContent />}
     </Fragment>
   );
 }
