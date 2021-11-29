@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Fragment, useState } from "react";
 import "../../App.css";
-import {ExportReactCSV} from '../../ExportReactCSV';
+import { ExportReactCSV } from "../../ExportReactCSV";
 import {
   Button,
   FormControl,
@@ -385,18 +385,24 @@ function Content({ active }) {
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <Grid item lg={12}>
-            <ExportReactCSV csvData={rows} classes={classes.buttonDisable} fileName={"datadetails"} />
-              <Button
-                variant="contained"
-                size="large"
-                className={classes.buttonEnable}
-                color="success"
-                type="button"
-                onCLick={handleClickAction}
-                disabled={selected.length >= 1 ? false : true}
-              >
-                Action
-              </Button>
+              <ExportReactCSV
+                csvData={rows}
+                classes={classes.buttonDisable}
+                fileName={"datadetails"}
+              />
+              {active === "active" && (
+                <Button
+                  variant="contained"
+                  size="large"
+                  className={classes.buttonEnable}
+                  color="success"
+                  type="button"
+                  onClick={handleClickAction}
+                  disabled={selected.length >= 1 ? false : true}
+                >
+                  Action
+                </Button>
+              )}
               <Button
                 variant="contained"
                 size="large"
