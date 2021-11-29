@@ -25,6 +25,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { responseContent } from "../../Helpers/OptionHelpers";
 import { useStyles } from "../styles";
+import {ExportReactCSV} from '../../ExportReactCSV';
 
 const rows = responseContent;
 function descendingComparator(a, b, orderBy) {
@@ -281,14 +282,7 @@ export default function AreaContent() {
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <Grid item lg={12}>
-              <Button
-                variant="outlined"
-                size="large"
-                className={classes.buttonDisable}
-                color="error"
-              >
-                Export to Excell
-              </Button>
+            <ExportReactCSV csvData={rows} classes={classes.buttonDisable} fileName={"viewArea"} />
             </Grid>
 
             <Grid container>
@@ -317,6 +311,7 @@ export default function AreaContent() {
                           page * rowsPerPage + rowsPerPage
                         )
                         .map((row, index) => {
+                          console.log(row)
                           const isItemSelected = isSelected(row.account);
                           const labelId = `enhanced-table-checkbox-${index}`;
 
