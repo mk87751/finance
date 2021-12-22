@@ -1,16 +1,23 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 export default function Navigation() {
+  const location = useLocation();
   const history = useHistory();
-  const [value, setValue] = React.useState("home");
+  const [value, setValue] = useState("home");
+  console.log(location.pathname);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     history.push(newValue);
   };
+  useEffect(() => {
+    if (location.pathname === "/areaProfile") {
+      setValue("areaProfile");
+    }
+  }, [location]);
 
   return (
     <Box

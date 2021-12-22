@@ -9,30 +9,59 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import { getAreaProfile } from "../../Actions/areaProfile.action";
+import { getAreaDetails } from "../../Actions/home.action";
+import { Alert, AlertTitle } from "@material-ui/lab";
 import { area } from "../../Helpers/OptionHelpers";
 import { useStyles } from "../styles";
 import AreaContent from "./AreaContent";
+import { useDispatch, useSelector } from "react-redux";
 
 const initialValues = {
-  area: "",
-  areaApprover: "",
-  backupApprover: "",
+  Area: "",
+  AreaApprover: "",
+  BackupApprover: "",
 };
 function ViewAreaProfile() {
+  const dispatch = useDispatch();
+  const [area, setArea] = useState(
+    useSelector((state) => state.home?.area?.data)
+  );
   const [view, setView] = useState(initialValues);
   const [showContent, setShowContent] = useState(false);
+  const [data, setData] = useState([]);
+  const [alert, setAlert] = useState(false);
   const classes = useStyles();
+  console.log(area);
+  useEffect(() => {
+    !area &&
+      dispatch(getAreaDetails()).then((response) => {
+        if (response.status === 200) {
+          console.log(response.data.data);
+          setArea(response.data.data);
+        }
+      });
+  }, []);
   const handleSubmit = () => {
-    if (view.area || view.areaApprover || view.backupApprover) {
+    if (view.Area || view.AreaApprover || view.BackupApprover) {
       setShowContent(true);
+      dispatch(getAreaProfile(view)).then((response) => {
+        if (response.status === 200) {
+          console.log(JSON.parse(response.data.data));
+          setData(JSON.parse(response.data.data));
+        }
+      });
+    } else {
+      setAlert(true);
     }
-    console.log("submit clicked");
   };
 
   const onClickCancelHandler = () => {
     setShowContent(false);
     setView(initialValues);
+    setData([]);
+    setAlert(false);
   };
   return (
     <Fragment>
@@ -51,8 +80,22 @@ function ViewAreaProfile() {
                 color="primary"
                 gutterBottom
               >
-                {"View Area Profile:"}
+                {"View Area Profile:"}{" "}
               </Typography>
+              {alert && (
+                <Typography
+                  className={classes.profileTitle}
+                  variant="h6"
+                  color="primary"
+                  gutterBottom
+                >
+                  <Alert severity="warning">
+                    <AlertTitle>Warning</AlertTitle>
+                    At least one field should be filled to View —{" "}
+                    <strong>check it out!</strong>
+                  </Alert>
+                </Typography>
+              )}
 
               <FormControl
                 size="small"
@@ -64,15 +107,17 @@ function ViewAreaProfile() {
                 </InputLabel>
 
                 <Select
-                  value={view.area}
+                  value={view.Area}
                   id="area"
                   color="secondary"
                   labelId="area-label"
                   label="area"
-                  onChange={(event) =>
-                    setView({ ...view, area: event.target.value })
-                  }
+                  onChange={(event) => {
+                    setView({ ...view, Area: event.target.value });
+                    setAlert(false);
+                  }}
                 >
+                  <MenuItem value=""></MenuItem>
                   {area &&
                     area.map((ele) => (
                       <MenuItem key={ele} value={ele}>
@@ -82,8 +127,22 @@ function ViewAreaProfile() {
                 </Select>
               </FormControl>
 
+              {/* <TextField
+                value={view.Area}
+                size="small"
+                id="area"
+                color="secondary"
+                variant="outlined"
+                label="Area"
+                className={classes.spacing}
+                inputProps={{ maxLength: 12 }}
+                onChange={(event) => {
+                  setView({ ...view, Area: event.target.value });
+                  setAlert(false);
+                }}
+              /> */}
               <TextField
-                value={view.areaApprover}
+                value={view.AreaApprover}
                 size="small"
                 id="areaApprover"
                 color="secondary"
@@ -91,12 +150,13 @@ function ViewAreaProfile() {
                 label="Area Approver"
                 className={classes.spacing}
                 inputProps={{ maxLength: 12 }}
-                onChange={(event) =>
-                  setView({ ...view, areaApprover: event.target.value })
-                }
+                onChange={(event) => {
+                  setView({ ...view, AreaApprover: event.target.value });
+                  setAlert(false);
+                }}
               />
               <TextField
-                value={view.backupApprover}
+                value={view.BackupApprover}
                 size="small"
                 id="backupApprover"
                 color="secondary"
@@ -104,9 +164,10 @@ function ViewAreaProfile() {
                 label="BackupApprover"
                 className={classes.spacing}
                 inputProps={{ maxLength: 12 }}
-                onCgange={(event) =>
-                  setView({ ...view, backupApprover: event.target.value })
-                }
+                onCgange={(event) => {
+                  setView({ ...view, BackupApprover: event.target.value });
+                  setAlert(false);
+                }}
               />
             </Grid>
             <Grid item lg={12}>
@@ -134,7 +195,7 @@ function ViewAreaProfile() {
           </form>
         </Paper>
       </Grid>
-      {showContent && <AreaContent />}
+      {data.length > 0 && <AreaContent data={data} />}
     </Fragment>
   );
 }

@@ -69,3 +69,9 @@
   background-color: #701611;
   color: #fff;
 }
+
+@media screen {
+  .printContent {
+    display: none;
+  }
+}
