@@ -19,7 +19,7 @@ function getModalStyle() {
   };
 }
 
-function ActionModal({ modal, approveRecords }) {
+function AddFileModal({ modal, approveAddFile }) {
   const classes = useStyles();
   const modalStyle = getModalStyle();
   const subTitle = "Do you want to Approve the selected Records";
@@ -30,8 +30,9 @@ function ActionModal({ modal, approveRecords }) {
   };
 
   const handleApprove = () => {
-    approveRecords(true);
-    console.log("Approve clicked");
+    approveAddFile(true);
+    modal(false);
+    console.log("Yes clicked");
   };
   const body = (
     <div style={modalStyle} className={classes.paper}>
@@ -48,7 +49,7 @@ function ActionModal({ modal, approveRecords }) {
         className={classes.modalTitle}
         gutterBottom
       >
-        Do you want to approve the selected Records ?
+        Are you sure ?
       </Typography>
       <Typography
         variant="body1"
@@ -78,7 +79,7 @@ function ActionModal({ modal, approveRecords }) {
             color="secondary"
             onClick={handleApprove}
           >
-            Approve
+            Yes
           </Button>
         </Grid>
       </Grid>
@@ -101,4 +102,4 @@ function ActionModal({ modal, approveRecords }) {
   );
 }
 
-export default ActionModal;
+export default AddFileModal;

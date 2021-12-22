@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
@@ -25,9 +25,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { responseContent } from "../../Helpers/OptionHelpers";
 import { useStyles } from "../styles";
-import {ExportReactCSV} from '../../ExportReactCSV';
+import { ExportReactCSV } from "../../ExportReactCSV";
 
-const rows = responseContent;
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -99,14 +98,14 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{ "aria-label": "select all records" }}
           />
-        </TableCell>
+        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -119,7 +118,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             > */}
-            {headCell.label}
+            <span style={{ fontWeight: 600 }}>{headCell.label}</span>
             {/* {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -215,7 +214,10 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function AreaContent() {
+export default function AreaContent({ data }) {
+  console.log("data:", data);
+  const [rows, setRows] = useState([]);
+  console.log("rows:", rows);
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -223,6 +225,14 @@ export default function AreaContent() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  useEffect(() => {
+    setRows(
+      data.map((ele) => {
+        return { ...ele, Status: "Saved" };
+      })
+    );
+  }, [data]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -232,19 +242,19 @@ export default function AreaContent() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.account);
+      const newSelecteds = rows.map((n) => n.area_profile_id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, account) => {
-    const selectedIndex = selected.indexOf(account);
+  const handleClick = (event, area_profile_id) => {
+    const selectedIndex = selected.indexOf(area_profile_id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, account);
+      newSelected = newSelected.concat(selected, area_profile_id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -272,7 +282,8 @@ export default function AreaContent() {
     setDense(event.target.checked);
   };
 
-  const isSelected = (account) => selected.indexOf(account) !== -1;
+  const isSelected = (area_profile_id) =>
+    selected.indexOf(area_profile_id) !== -1;
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -282,7 +293,11 @@ export default function AreaContent() {
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <Grid item lg={12}>
-            <ExportReactCSV csvData={rows} classes={classes.buttonDisable} fileName={"viewArea"} />
+              <ExportReactCSV
+                csvData={rows}
+                classes={classes.buttonDisable}
+                fileName={"viewArea"}
+              />
             </Grid>
 
             <Grid container>
@@ -311,28 +326,29 @@ export default function AreaContent() {
                           page * rowsPerPage + rowsPerPage
                         )
                         .map((row, index) => {
-                          console.log(row)
-                          const isItemSelected = isSelected(row.account);
+                          const isItemSelected = isSelected(
+                            row.area_profile_id
+                          );
                           const labelId = `enhanced-table-checkbox-${index}`;
 
                           return (
                             <TableRow
                               hover
                               onClick={(event) =>
-                                handleClick(event, row.account)
+                                handleClick(event, row.area_profile_id)
                               }
                               role="checkbox"
                               aria-checked={isItemSelected}
                               tabIndex={-1}
-                              key={row.account}
+                              key={row.area_profile_id}
                               selected={isItemSelected}
                             >
-                              <TableCell padding="checkbox">
+                              {/* <TableCell padding="checkbox">
                                 <Checkbox
                                   checked={isItemSelected}
                                   inputProps={{ "aria-labelledby": labelId }}
                                 />
-                              </TableCell>
+                              </TableCell> */}
                               <TableCell
                                 component="th"
                                 id={labelId}
@@ -340,19 +356,19 @@ export default function AreaContent() {
                                 padding="none"
                                 align="center"
                               >
-                                {row.area}
+                                {row.area_name}
                               </TableCell>
                               <TableCell align="center">
-                                {row.areaApprover}
+                                {row.area_approver}
                               </TableCell>
                               <TableCell align="center">
-                                {row.backupApprover}
+                                {row.backup_approver}
                               </TableCell>
-                              <TableCell align="center">{row.status}</TableCell>
+                              <TableCell align="center">Saved</TableCell>
                             </TableRow>
                           );
                         })}
-                      {emptyRows > 0 && (
+                      {rows.length === 0 && (
                         <TableRow
                           style={{ height: (dense ? 33 : 53) * emptyRows }}
                         >

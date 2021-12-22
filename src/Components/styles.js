@@ -35,7 +35,7 @@ export const useStyles = makeStyles((theme) => ({
   buttonEnable: {
     "&:hover": {
       backgroundColor: "#701611",
-      colog: "#fff",
+      color: "#fff",
     },
     backgroundColor: "#e22925",
     borderRadius: "24px",
@@ -59,7 +59,7 @@ export const useStyles = makeStyles((theme) => ({
   buttonDisable: {
     "&:hover": {
       backgroundColor: "#fff",
-      colog: "#701611",
+      color: "#701611",
       border: "2px solid #701611",
     },
     backgroundColor: "#fff",
@@ -92,6 +92,11 @@ export const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 400,
   },
+  tableCell: {
+    fontSize: 12,
+    padding: 4,
+    width: 48,
+  },
   tableContainer: {
     maxHeight: 400,
   },
@@ -105,5 +110,8 @@ export const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 20,
     width: 1,
+  },
+  appBar: {
+    position: "relative",
   },
 }));

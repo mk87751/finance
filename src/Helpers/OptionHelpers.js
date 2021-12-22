@@ -1,3 +1,46 @@
+export const BrowseData = {
+  accountInformation: {
+    reconcilationStatus: "Area Approved",
+    account: "282004",
+    area: "00 BENEFITS UNIT MY",
+    businessUnit: "00001",
+    product: "*",
+    CW: "",
+    zeroBalanceAccountMonthly: "No",
+    zeroBalanceAccountEOY: "No",
+    assignedReconciler: "Lisa D Block(A2KQ)",
+    assignedApprover: "Nicky Burns(HBCY)",
+    assignedAreaApprover: "Katy Lampe(I4EG)",
+  },
+  balanceInformation: {
+    ledgerBalance: "$273,659.93",
+    controlBalance: "$273,659.93",
+    outstandingListing: "$0.00",
+    difference: "$0.00",
+  },
+  explanation: "",
+  actionPlan: "",
+  estimatedDateOfResolution: "",
+  statusHistory: {
+    openedDate: "03/13/2020 02:16:33 AM",
+    reconciledDate: "03/13/2020 02:16:33 AM",
+    reconciledBy: "by System Reconciled",
+    approvedDate: "03/13/2020 02:16:33 AM",
+    approvedBy: "by System Approved",
+    areaApprovedDate: "03/17/2020 09:35:37 AM",
+    areaApprovedBy: "Katy Lampe(I4EG)",
+  },
+  editHistory: {
+    openedDate: "03/13/2020 02:16:33 AM",
+    reconciledDate: "03/13/2020 02:16:33 AM",
+    reconciledBy: "by System Reconciled",
+    approvedDate: "03/13/2020 02:16:33 AM",
+    approvedBy: "by System Approved",
+    areaApprovedDate: "03/17/2020 09:35:37 AM",
+    areaApprovedBy: "Katy Lampe(I4EG)",
+  },
+};
+
 export const area = [
   "",
   "00 BENEFITS UNIT MY",
@@ -29,7 +72,7 @@ export const month = [
   "Dec-12",
 ];
 
-export const status = ["", "Open", "Reconciled", "Approved", "Area Approved"];
+export const status = ["", "open", "Reconciled", "Approved", "Area Approved"];
 
 export const responseContent = [
   {

@@ -14,6 +14,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+
 import { useStyles } from "../styles";
 // import ContentTable from "./ContentTable";
 import ActionModal from "../modals/ActionModal";
@@ -22,6 +23,11 @@ import clsx from "clsx";
 import { lighten } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
+import Dialog from "@material-ui/core/Dialog";
+import Slide from "@material-ui/core/Slide";
+import AppBar from "@material-ui/core/AppBar";
+import CloseIcon from "@material-ui/icons/Close";
+
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
@@ -39,8 +45,12 @@ import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { responseContent } from "../../Helpers/OptionHelpers";
+import { useDispatch } from "react-redux";
+import { browseRecords } from "../../Actions/home.action";
+import Browse from "./Browse";
+import ReactToPrint from "react-to-print";
+import { useRef } from "react";
 
-const rows = responseContent;
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -185,7 +195,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             > */}
-            {headCell.label}
+            <span style={{ fontWeight: 600 }}>{headCell.label}</span>
             {/* {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -306,10 +316,40 @@ EnhancedTableToolbar.propTypes = {
 //     width: 1,
 //   },
 // }));
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
-function Content({ active }) {
+function Content({ active, data, setOption }) {
+  console.log("data:", data);
+  const dispatch = useDispatch();
+  const [rows, setRows] = useState(data);
   const [modal, setModal] = useState(false);
   const [approve, setApprove] = useState(false);
+  const classes = useStyles();
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("calories");
+  const [selected, setSelected] = React.useState([]);
+  const [page, setPage] = React.useState(0);
+  const [dense, setDense] = React.useState(false);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [browseOpen, setOptionOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const componentRef = useRef("");
+
+  // const [inputParamsBrowse, setInputParamsBrowse] = useState({
+  //   accountId: "",
+  //   instanceId: "",
+  // });
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleClickAction = () => {
     console.log("action");
     setModal(true);
@@ -319,13 +359,22 @@ function Content({ active }) {
     setApprove(false);
     setModal(false);
   }
-  const classes = useStyles();
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleClickBrowse = (value) => {
+    let inputParam = rows.find((row) => row.account_id === selected[0]);
+    console.log(rows, "selected:", selected[0], "inputParams:", inputParam);
+
+    dispatch(
+      browseRecords({
+        accountId: inputParam.account_id,
+        instanceId: inputParam.instnc_id,
+      })
+    ).then((response) => {
+      if (response.status === 200) {
+        setOption(value);
+      }
+    });
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -335,19 +384,23 @@ function Content({ active }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.account);
+      const newSelecteds = rows.map((n) => n.account_id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, account) => {
-    const selectedIndex = selected.indexOf(account);
+  const handleClick = (event, row) => {
+    // setInputParamsBrowse({
+    // accountId: row.account_id,
+    // instanceId: row.instnc_id,
+    // });
+    const selectedIndex = selected.indexOf(row.account_id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, account);
+      newSelected = newSelected.concat(selected, row.account_id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -390,7 +443,7 @@ function Content({ active }) {
                 classes={classes.buttonDisable}
                 fileName={"datadetails"}
               />
-              {active === "active" && (
+              {active === "Active" && (
                 <Button
                   variant="contained"
                   size="large"
@@ -409,18 +462,32 @@ function Content({ active }) {
                 className={classes.buttonEnable}
                 color="success"
                 disabled={selected.length === 1 ? false : true}
+                onClick={() => handleClickBrowse("browse")}
               >
                 Browse
               </Button>
+              {/* <ReactToPrint
+                content={() => componentRef.current}
+                onBeforeGetContent={() => {
+                  handleClickBrowse("print");
+                }}
+                trigger={() => ( */}
               <Button
                 variant="contained"
                 size="large"
                 className={classes.buttonEnable}
                 color="success"
                 disabled={selected.length === 1 ? false : true}
+                onClick={() => handleClickBrowse("print")}
               >
                 Print
               </Button>
+              {/* )} /> */}
+              {/* <Browse
+                option={"print"}
+                setOption={() => {}}
+                ref={componentRef}
+              /> */}
             </Grid>
             <Grid item lg={12}>
               <Paper className={classes.paper}>
@@ -429,8 +496,8 @@ function Content({ active }) {
                   <Table
                     stickyHeader
                     aria-label="sticky table"
-                    sx={{}}
-                    size={"small"}
+                    sx={{ fontSize: 14 }}
+                    size={"4px"}
                     id="table-to-xls"
                   >
                     <EnhancedTableHead
@@ -449,19 +516,17 @@ function Content({ active }) {
                           page * rowsPerPage + rowsPerPage
                         )
                         .map((row, index) => {
-                          const isItemSelected = isSelected(row.account);
+                          const isItemSelected = isSelected(row.account_id);
                           const labelId = `enhanced-table-checkbox-${index}`;
 
                           return (
                             <TableRow
                               hover
-                              onClick={(event) =>
-                                handleClick(event, row.account)
-                              }
+                              onClick={(event) => handleClick(event, row)}
                               role="checkbox"
                               aria-checked={isItemSelected}
                               tabIndex={-1}
-                              key={row.account}
+                              key={row.account_id}
                               selected={isItemSelected}
                             >
                               <TableCell padding="checkbox">
@@ -471,49 +536,88 @@ function Content({ active }) {
                                 />
                               </TableCell>
                               <TableCell
-                                component="th"
+                                className={classes.tableCell}
                                 id={labelId}
                                 scope="row"
-                                padding="none"
                               >
                                 {row.date}
                               </TableCell>
-                              <TableCell align="center">{row.area}</TableCell>
-                              <TableCell align="center">
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
+                                {row.area}
+                              </TableCell>
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
                                 {row.businessUnit}
                               </TableCell>
-                              <TableCell align="center">
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
                                 {row.account}
                               </TableCell>
-                              <TableCell align="center">
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
                                 {row.product}
                               </TableCell>
-                              <TableCell align="center">
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
                                 {row.assignedReconciler}
                               </TableCell>
-                              <TableCell align="center">
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
                                 {row.assignedApprover}
                               </TableCell>
-                              <TableCell align="center">
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
                                 {row.assignedAreaApprover}
                               </TableCell>
-                              <TableCell align="center">
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
                                 {row.ledgerBalance}
                               </TableCell>
-                              <TableCell align="center">
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
                                 {row.controlBalance}
                               </TableCell>
-                              <TableCell align="center">
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
                                 {row.outstandingListing}
                               </TableCell>
-                              <TableCell align="center">
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
                                 {row.difference}
                               </TableCell>
-                              <TableCell align="center">{row.status}</TableCell>
+                              <TableCell
+                                className={classes.tableCell}
+                                align="center"
+                              >
+                                {row.status}
+                              </TableCell>
                             </TableRow>
                           );
                         })}
-                      {emptyRows > 0 && (
+                      {rows.length === 0 && (
                         <TableRow
                           style={{ height: (dense ? 33 : 53) * emptyRows }}
                         >
@@ -537,7 +641,7 @@ function Content({ active }) {
           </Paper>
         </Grid>
       </Grid>
-      {modal && active === "active" && (
+      {modal && active === "Active" && (
         <ActionModal modal={setModal} approveRecords={setApprove} />
       )}
     </Fragment>

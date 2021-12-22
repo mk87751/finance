@@ -6,6 +6,7 @@ import rootReducer from "../Reducers";
 const initialState = {
   validUser: true,
   actionModal: false,
+  area:[],
 };
 
 export const Store = createStore(
