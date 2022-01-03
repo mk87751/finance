@@ -19,8 +19,10 @@ function AddAreaProfile() {
   const [alert, setAlert] = useState(false);
   const [addFilemodal, setAddFileModal] = useState(false);
   const [approve, setApprove] = useState(false);
-
-  approve &&
+  console.log(approve);
+  if (approve) {
+    setApprove(false);
+    console.log(approve);
     dispatch(addAreaProfile(add)).then((response) => {
       if (response.status === 200) {
         console.log(response.data.message);
@@ -28,6 +30,8 @@ function AddAreaProfile() {
       }
       console.log(successMessage);
     });
+  }
+
   const handleSubmit = () => {
     if (add.newArea && add.newAreaApprover && add.newBackupApprover) {
       setAlert(false);

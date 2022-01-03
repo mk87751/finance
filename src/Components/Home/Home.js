@@ -86,10 +86,10 @@ function Home() {
   };
 
   const onClickResetHandler = () => {
-    window.location.reload(false);
     setSearch(initialValues);
     setData([]);
     setOption("");
+    setActive(true);
   };
   return (
     <>
